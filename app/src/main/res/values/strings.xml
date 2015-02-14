@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Book</string>
+
+    <string name="title_section1">Books</string>
+    <string name="title_section2">Add Book</string>
+    <string name="title_section3">Collection</string>
+    <string name="title_section4">Tags</string>
+
+    <string name="mainTab_section1">Love</string>
+    <string name="mainTab_section2">Hot</string>
+    <string name="mainTab_section3">New</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Books</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
