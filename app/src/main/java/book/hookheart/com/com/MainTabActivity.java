@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
-import com.hookheart.book.fragment.FragmentText;
+import com.hookheart.bookbook.fragment.MyBooksFragment;
 
 import it.neokree.materialtabs.MaterialTab;
 import it.neokree.materialtabs.MaterialTabHost;
@@ -202,7 +202,7 @@ public class MainTabActivity extends ActionBarActivity
         }
 
         public Fragment getItem(int num) {
-            return new FragmentText();
+            return new MyBooksFragment();
         }
 
         @Override
