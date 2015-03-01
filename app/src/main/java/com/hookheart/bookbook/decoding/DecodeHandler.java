@@ -38,18 +38,18 @@ import book.hookheart.com.com.R;
 
 
 /**
- * ����handler
+ * 解码handler
  */
 final class DecodeHandler extends Handler
 {
     private static final String TAG = DecodeHandler.class.getSimpleName();
 
     /**
-     * ����activity
+     * 捕获activity
      */
     private final CaptureActivity activity;
     /**
-     * ���������
+     * 定义解码器
      */
     private final MultiFormatReader multiFormatReader;
 
@@ -57,11 +57,11 @@ final class DecodeHandler extends Handler
             Hashtable<DecodeHintType, Object> hints)
     {
         /**
-         * ��ʼ��һ��������
+         * 初始化一个解码器
          */
         multiFormatReader = new MultiFormatReader();
         /**
-         * ����decodeThread�����õĸ�ʽ���ý�����
+         * 用在decodeThread中设置的格式设置解码器
          */
         multiFormatReader.setHints(hints);
         
@@ -76,13 +76,13 @@ final class DecodeHandler extends Handler
             case R.id.decode:
                 // Log.d(TAG, "Got decode message");
                 /**
-                 * �����͹�����ͼƬ����
+                 * 处理发送过来的图片数据
                  */
                 decode((byte[]) message.obj, message.arg1, message.arg2);
                 break;
             case R.id.quit:
                 /**
-                 * �˳�looper�̣߳������̣߳�
+                 * 退出looper线程（解码线程）
                  */
                 Looper.myLooper().quit();
                 break;
@@ -106,7 +106,7 @@ final class DecodeHandler extends Handler
         long start = System.currentTimeMillis();
         Result rawResult = null;
         /**
-         * �������ȡ��ͼƬ����ת��ΪbinaryBitmap��ʽ
+         * 将相机获取的图片数据转化为binaryBitmap格式
          */
         //PlanarYUVLuminanceSource source = CameraManager.get()
         //        .buildLuminanceSource(data, width, height);
@@ -123,7 +123,7 @@ final class DecodeHandler extends Handler
         try
         {
             /**
-             * ����ת�����ͼƬ���õ����
+             * 解析转化后的图片，得到结果
              */
             rawResult = multiFormatReader.decodeWithState(bitmap);
         }
@@ -142,7 +142,7 @@ final class DecodeHandler extends Handler
             Log.d(TAG, "Found barcode (" + (end - start) + " ms):\n"
                     + rawResult.toString());
             /**
-             * ������������Ϊ�գ����ǽ����ɹ��ˣ����ͳɹ���Ϣ��������ŵ�message��
+             * 如果解析结果不为空，就是解析成功了，则发送成功消息，将结果放到message中
              */
             Message message = Message.obtain(activity.getHandler(),
                     R.id.decode_succeeded, rawResult);
@@ -156,7 +156,7 @@ final class DecodeHandler extends Handler
         else
         {
             /**
-             *  ������ʧ��message
+             *  否则发送失败message
              */
             Message message = Message.obtain(activity.getHandler(),
                     R.id.decode_failed);

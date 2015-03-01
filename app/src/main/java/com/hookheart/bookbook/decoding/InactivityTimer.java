@@ -26,27 +26,27 @@ import android.app.Activity;
 
 /**
  * Finishes an activity after a period of inactivity.
- * ��activityһ��ʱ��������û�з�������ά�룬�ͽ���activity����Ϊ��ʱ�䲻�ϻ�ȡͼƬ���ĵ���Դ�п���ʹ��������
+ * 当activity一定时间后如果还没有分析出二维码，就结束activity，因为长时间不断获取图片消耗的资源有可能使机器奔溃
  */
 public final class InactivityTimer
 {
 
     /**
-     * ������ȴ�ʱ�䣬�����ʱ����û�з����ö�ά�룬����activity
+     * 设置最长等待时间，如果该时间内没有分析好二维码，结束activity
      */
     private static final int INACTIVITY_DELAY_SECONDS = 60;
 
     /**
-     * ��ʱ����
+     * 定时服务
      */
     private final ScheduledExecutorService inactivityTimer = Executors
             .newSingleThreadScheduledExecutor(new DaemonThreadFactory());
     /**
-     * ��Ҫ��ʱ������activity
+     * 需要定时结束的activity
      */
     private final Activity activity;
     /**
-     * ��ʱ������
+     * 定时控制器
      */
     private ScheduledFuture<?> inactivityFuture = null;
 
@@ -60,7 +60,7 @@ public final class InactivityTimer
     {
         cancel();
         /**
-         * ���ö�ʱ��
+         * 设置定时器
          */
         inactivityFuture = inactivityTimer.schedule(
                 new FinishListener(activity), INACTIVITY_DELAY_SECONDS,
@@ -68,14 +68,14 @@ public final class InactivityTimer
     }
 
     /**
-     * @Description:��ն�ʱ��
+     * @Description:清空定时器
      */
     private void cancel()
     {
         if (inactivityFuture != null)
         {
             /**
-             * ȡ����ʱ����
+             * 取消定时任务
              */
             inactivityFuture.cancel(true);
             inactivityFuture = null;
@@ -84,7 +84,7 @@ public final class InactivityTimer
 
     /**
      * 
-     * @Description:�رն�ʱ����Ͷ�ʱ�����÷�����activity����ʱ�е��ã�����������ʱ����Ͷ�ʱ��
+     * @Description:关闭定时服务和定时器，该方法在activity结束时有调用，用来结束定时服务和定时器
      */
     public void shutdown()
     {
@@ -97,12 +97,12 @@ public final class InactivityTimer
         public Thread newThread(Runnable runnable)
         {
             /**
-             * �÷�������threadFactory��ڣ���һ��runnable���󷵻�һ��thread���󣨰�װrunnbale��
+             * 该方法来自threadFactory接口，给一个runnable对象返回一个thread对象（包装runnbale）
              */
             Thread thread = new Thread(runnable);
             /**
-             * ����Ϊ�ػ��̣߳����ƺ�̨���񣬵������û��߳̽����󣬸��̻߳��Զ���������Ϊ��activity��������������ø�
-             * �̣߳�����ָFinishListener��Ϊ�ػ��̣߳��ͻᵼ�¸��߳��޷�����
+             * 设置为守护线程，类似后台服务，当所有用户线程结束后，该线程会自动结束，因为当activity结束后，如果不设置该
+             * 线程（这里指FinishListener）为守护线程，就会导致该线程无法结束
              */
             thread.setDaemon(true);
             return thread;

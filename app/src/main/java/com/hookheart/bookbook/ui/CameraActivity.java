@@ -17,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hookheart.bookbook.bean.Book;
+import com.hookheart.bookbook.utils.IsbnXmlSax;
+
+import book.hookheart.com.com.R;
 
 public class CameraActivity extends Activity {
 	private Button mCaptureButton, mExzitButton;
@@ -38,8 +41,8 @@ public class CameraActivity extends Activity {
 	}
 
 	private void init() {
-		mCaptureButton = (Button) findViewById(R.id.bt_capture);
-		mExzitButton = (Button) findViewById(R.id.bt_exit);
+		mCaptureButton = (Button) findViewById(R.id.btn_capture);
+		mExzitButton = (Button) findViewById(R.id.btn_exit);
 		mResultTextView = (TextView) findViewById(R.id.tv_result);
 		mResultImageView = (ImageView) findViewById(R.id.iv_result);
 
@@ -53,18 +56,18 @@ public class CameraActivity extends Activity {
 		public void onClick(View v) {
 
 			switch (v.getId()) {
-			case R.id.bt_capture:
+			case R.id.btn_capture:
 
 				Intent intent = new Intent(
 						com.hookheart.bookbook.ui.CameraActivity.this,
 						CaptureActivity.class);
-				com.digdream.tasbook.ui.CameraActivity.this
+				com.hookheart.bookbook.ui.CameraActivity.this
 						.startActivity(intent);
 				break;
 
-			case R.id.bt_exit:
+			case R.id.btn_exit:
 
-				com.digdream.tasbook.ui.CameraActivity.this.finish();
+				com.hookheart.bookbook.ui.CameraActivity.this.finish();
 				break;
 
 			default:
@@ -123,7 +126,7 @@ public class CameraActivity extends Activity {
 	};
 
 	/**
-	 * ����ͼ����Ϣ
+	 * 更新图书信息
 	 * 
 	 * @param string
 	 */

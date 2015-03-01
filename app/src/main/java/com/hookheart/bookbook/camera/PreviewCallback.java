@@ -28,19 +28,19 @@ final class PreviewCallback implements Camera.PreviewCallback
     private static final String TAG = PreviewCallback.class.getSimpleName();
 
     /**
-     * ������ù���
+     * 相机配置管理
      */
     private final CameraConfigurationManager configManager;
     /**
-     * �Ƿ���һ��������
+     * 是否是一次性照相
      */
     private final boolean useOneShotPreviewCallback;
     /**
-     * �����handler
+     * 解码的handler
      */
     private Handler previewHandler;
     /**
-     * �����ź�
+     * 解码信号
      */
     private int previewMessage;
 
@@ -67,7 +67,7 @@ final class PreviewCallback implements Camera.PreviewCallback
         if (previewHandler != null)
         {
             /**
-             *  ���handler����������DecodeThread��run�����е�handler
+             * 这个handler就是来自于DecodeThread中run（）中的handler
              */
             Message message = previewHandler.obtainMessage(previewMessage,
                     cameraResolution.x, cameraResolution.y, data);

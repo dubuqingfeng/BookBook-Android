@@ -28,6 +28,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.hookheart.bookbook.camera.CameraManager;
 import com.hookheart.bookbook.ui.CaptureActivity;
+import com.hookheart.bookbook.view.ViewfinderResultPointCallback;
 
 import book.hookheart.com.com.R;
 
@@ -35,7 +36,7 @@ import book.hookheart.com.com.R;
 /**
  * This class handles all the messaging which comprises the state machine for
  * capture.
- * ���handler��ʵ�������������������Ľ��
+ * 这个handler其实就是用来处理相机捕获的结果
  * @author dswitkin@google.com (Daniel Switkin)
  */
 public final class CaptureActivityHandler extends Handler
@@ -45,20 +46,20 @@ public final class CaptureActivityHandler extends Handler
             .getSimpleName();
 
     /**
-     * �����ά���activity
+     * 捕获二维码的activity
      */
     private final CaptureActivity activity;
     /**
-     * ������ͼƬ�Ľ����̣߳���һ��Looper�̣߳�
+     * 处理捕获到图片的解析线程（是一个Looper线程）
      */
     private final DecodeThread decodeThread;
     /**
-     * ��ǰ�����״̬
+     * 当前捕获的状态
      */
     private State state;
 
     /**
-     * ״̬ö��
+     * 状态枚举
      */
     private enum State
     {
@@ -70,22 +71,22 @@ public final class CaptureActivityHandler extends Handler
     {
         this.activity = activity;
         /**
-         * ���ý����߳�
+         * 设置解码线程
          */
         decodeThread = new DecodeThread(activity, decodeFormats, characterSet,
                 new ViewfinderResultPointCallback(activity.getViewfinderView()));
         /**
-         * �����߳̿�ʼִ��
+         * 解码线程开始执行
          */
         decodeThread.start();
         /**
-         * ״̬����Ϊ�ɹ�
+         * 状态设置为成功
          */
         state = State.SUCCESS;
 
         // Start ourselves capturing previews and decoding.
         /**
-         * ���׼��
+         * 相机准备
          */
         CameraManager.get().startPreview();
         restartPreviewAndDecode();
@@ -105,7 +106,7 @@ public final class CaptureActivityHandler extends Handler
                 if (state == State.PREVIEW)
                 {
                     /**
-                     * �����Զ��۽�
+                     * 处理自动聚焦
                      */
                     CameraManager.get().requestAutoFocus(this, R.id.auto_focus);
                 }
@@ -150,11 +151,11 @@ public final class CaptureActivityHandler extends Handler
     {
         state = State.DONE;
         /**
-         * �ر����
+         * 关闭相机
          */
         CameraManager.get().stopPreview();
         /**
-         * �ر�looper�����߳�
+         * 关闭looper解码线程
          */
         Message quit = Message.obtain(decodeThread.getHandler(), R.id.quit);
         quit.sendToTarget();
@@ -162,7 +163,7 @@ public final class CaptureActivityHandler extends Handler
         try
         {
             /**
-             * ����join�������ȴ������̵߳Ľ���
+             * 这里join是用来等待解码线程的结束
              */
             decodeThread.join();
         }
@@ -181,17 +182,17 @@ public final class CaptureActivityHandler extends Handler
         if (state == State.SUCCESS)
         {
             /**
-             * ����״̬Ϊ����׼������ʵ�������ý���handler����ʾͼ���surface
+             * 设置状态为捕获准备，其实就是设置解码handler和显示图像的surface
              */
             state = State.PREVIEW;
             CameraManager.get().requestPreviewFrame(decodeThread.getHandler(),
                     R.id.decode);
             /**
-             * ��������Զ��۽�
+             * 设置相机自动聚焦
              */
             CameraManager.get().requestAutoFocus(this, R.id.auto_focus);
             /**
-             * ���view�еĽ��ͼƬ,������view�ٻ����Ǹ��м�Ŀ��ͺ���
+             * 清空view中的结果图片,就是让view再绘制那个中间的框框和红线
              */
             activity.drawViewfinder();
         }

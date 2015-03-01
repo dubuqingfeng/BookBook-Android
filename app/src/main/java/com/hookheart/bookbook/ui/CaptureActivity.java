@@ -23,6 +23,7 @@ import com.google.zxing.Result;
 import com.hookheart.bookbook.camera.CameraManager;
 import com.hookheart.bookbook.decoding.CaptureActivityHandler;
 import com.hookheart.bookbook.decoding.InactivityTimer;
+import com.hookheart.bookbook.view.ViewfinderView;
 
 import book.hookheart.com.com.R;
 
@@ -47,7 +48,7 @@ public class CaptureActivity extends Activity implements Callback
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture);
-        // ��ʼ�� CameraManager
+        // 初始化 CameraManager
         CameraManager.init(getApplication());
 
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
@@ -61,7 +62,7 @@ public class CaptureActivity extends Activity implements Callback
     {
         super.onResume();
         /**
-         * �������һϵ�г�ʼ�����view�Ĺ���
+         * 这里就是一系列初始化相机view的过程
          */
         SurfaceView surfaceView = (SurfaceView) findViewById(R.id.preview_view);
         SurfaceHolder surfaceHolder = surfaceView.getHolder();
@@ -78,7 +79,7 @@ public class CaptureActivity extends Activity implements Callback
         characterSet = null;
 
         /**
-         * ������ǿ����Ƿ���������������ģʽ������ǾͲ���������������ǣ��򲻲���
+         * 这里就是看看是否是正常声音播放模式，如果是就播放声音，如果不是，则不播放
          */
         playBeep = true;
         AudioManager audioService = (AudioManager) getSystemService(AUDIO_SERVICE);
@@ -87,11 +88,11 @@ public class CaptureActivity extends Activity implements Callback
             playBeep = false;
         }
         /**
-         * ��ʼ������
+         * 初始化声音
          */
         initBeepSound();
         /**
-         * �Ƿ���
+         * 是否震动
          */
         vibrate = true;
     }
@@ -101,14 +102,14 @@ public class CaptureActivity extends Activity implements Callback
     {
         super.onPause();
         /**
-         * �ص�������ص������̣߳����looper������message
+         * 关掉相机，关掉解码线程，清空looper队列中message
          */
         if (handler != null)
         {
             handler.quitSynchronously();
             handler = null;
         }
-        CameraManager.get().closeDriver();// �ص����
+        CameraManager.get().closeDriver();// 关掉相机
     }
 
     @Override
@@ -119,7 +120,7 @@ public class CaptureActivity extends Activity implements Callback
     }
 
     /**
-     * ��ʼ�����
+     * 初始化相机
      */
     private void initCamera(SurfaceHolder surfaceHolder)
     {
@@ -138,7 +139,7 @@ public class CaptureActivity extends Activity implements Callback
         if (handler == null)
         {
             /**
-             * �½�������handler
+             * 新建解码结果handler
              */
             handler = new CaptureActivityHandler(this, decodeFormats,
                     characterSet);
@@ -156,7 +157,7 @@ public class CaptureActivity extends Activity implements Callback
     public void surfaceCreated(SurfaceHolder holder)
     {
         /**
-         * ��ʼ�����
+         * 初始化相机
          */
         if (!hasSurface)
         {
@@ -172,7 +173,7 @@ public class CaptureActivity extends Activity implements Callback
     }
 
     /**
-     * ������ʾ��view
+     * 返回显示的view
      */
     public ViewfinderView getViewfinderView()
     {
@@ -180,7 +181,7 @@ public class CaptureActivity extends Activity implements Callback
     }
 
     /**
-     * ���ش����������handler
+     * 返回处理解码结果的handler
      */
     public Handler getHandler()
     {
@@ -188,7 +189,7 @@ public class CaptureActivity extends Activity implements Callback
     }
 
     /**
-     * ���view����ǰɨ��ɹ���ͼƬ
+     * 清空view中先前扫描成功的图片
      */
     public void drawViewfinder()
     {
@@ -199,32 +200,32 @@ public class CaptureActivity extends Activity implements Callback
     public void handleDecode(Result obj, Bitmap barcode)
     {
         /**
-         * ���¼�ʱ
+         * 重新计时
          */
         inactivityTimer.onActivity();
         /**
-         * ��������Ƶ�view��
+         * 将结果绘制到view中
          */
         viewfinderView.drawResultBitmap(barcode);
         /**
-         * ����jeep����
+         * 播放jeep声音
          */
         playBeepSoundAndVibrate();
         /**
-         * ��ʾ�����ַ���
+         * 显示解码字符串
          */
         txtResult.setText(obj.getBarcodeFormat().toString() + ":"
                 + obj.getText());
         
-        com.digdream.tasbook.ui.CameraActivity.RESULT_MESSAGE = obj.getBarcodeFormat().toString() + ":"
+        com.hookheart.bookbook.ui.CameraActivity.RESULT_MESSAGE = obj.getBarcodeFormat().toString() + ":"
                 + obj.getText();
-        com.digdream.tasbook.ui.CameraActivity.RESULT_BITMAP = barcode;
-        com.digdream.tasbook.ui.AddBookActivity.RESULT_MESSAGE = obj.getBarcodeFormat().toString() + ":"
-                + obj.getText();
-        com.digdream.tasbook.ui.AddBookActivity.RESULT_BITMAP = barcode;
+        com.hookheart.bookbook.ui.CameraActivity.RESULT_BITMAP = barcode;
+        //com.hookheart.bookbook.ui.AddBookActivity.RESULT_MESSAGE = obj.getBarcodeFormat().toString() + ":"
+        //        + obj.getText();
+        //com.hookheart.bookbook.ui.AddBookActivity.RESULT_BITMAP = barcode;
         
-        Intent intent = new Intent(CaptureActivity.this, AddBookActivity.class);
-        this.startActivity(intent);
+        //Intent intent = new Intent(CaptureActivity.this, AddBookActivity.class);
+        //this.startActivity(intent);
         this.finish();
     }
 
@@ -258,21 +259,21 @@ public class CaptureActivity extends Activity implements Callback
     }
 
     /**
-     * ��ʱ��
+     * 震动时间
      */
     private static final long VIBRATE_DURATION = 200L;
 
     private void playBeepSoundAndVibrate()
     {
         /**
-         * ��������
+         * 播放声音
          */
         if (playBeep && mediaPlayer != null)
         {
             mediaPlayer.start();
         }
         /**
-         * ��
+         * 震动
          */
         if (vibrate)
         {

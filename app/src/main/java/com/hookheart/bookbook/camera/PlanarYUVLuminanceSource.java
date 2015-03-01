@@ -130,7 +130,7 @@ public final class PlanarYUVLuminanceSource extends LuminanceSource
     }
 
     /**
-     * ���ؼ��к�ĻҶ�ͼƬ
+     * 返回剪切后的灰度图片
      */
     public Bitmap renderCroppedGreyscaleBitmap()
     {
