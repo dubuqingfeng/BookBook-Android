@@ -7,24 +7,27 @@
 
     <!-- As the main content view, the view below consumes the entire
          space available using match_parent in both dimensions. -->
-    <FrameLayout android:id="@+id/container" android:layout_width="match_parent"
+    <LinearLayout android:id="@+id/container"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/window_background"
-        >
+        android:orientation="vertical">
         <!-- for Text Tabs -->
         <it.neokree.materialtabs.MaterialTabHost
             android:id="@+id/materialTabHost"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="40dp"
             app:textColor="#000000"
             app:primaryColor="@color/window_background"
             app:accentColor="#545454" />
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
-            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/materialTabHost" />
-        </FrameLayout>
+            android:layout_width="fill_parent"
+            android:layout_gravity="center"
+            android:persistentDrawingCache="animation"
+            />
+        </LinearLayout>
 
     <!-- android:layout_gravity="start" tells DrawerLayout to treat
          this as a sliding drawer on the left side for left-to-right
@@ -36,7 +39,7 @@
     <fragment android:id="@+id/navigation_drawer"
         android:layout_width="@dimen/navigation_drawer_width" android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:name="book.hookheart.com.com.NavigationDrawerFragment"
+        android:name="com.hookheart.bookbook.NavigationDrawerFragment"
         tools:layout="@layout/fragment_navigation_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

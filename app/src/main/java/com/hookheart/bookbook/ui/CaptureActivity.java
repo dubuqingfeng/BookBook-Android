@@ -20,12 +20,11 @@ import android.widget.TextView;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
+import com.hookheart.bookbook.R;
 import com.hookheart.bookbook.camera.CameraManager;
 import com.hookheart.bookbook.decoding.CaptureActivityHandler;
 import com.hookheart.bookbook.decoding.InactivityTimer;
 import com.hookheart.bookbook.view.ViewfinderView;
-
-import book.hookheart.com.com.R;
 
 public class CaptureActivity extends Activity implements Callback
 {

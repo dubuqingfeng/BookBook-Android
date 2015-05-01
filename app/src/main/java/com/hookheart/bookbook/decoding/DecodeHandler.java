@@ -30,11 +30,11 @@ import com.google.zxing.MultiFormatReader;
 import com.google.zxing.ReaderException;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
+import com.hookheart.bookbook.R;
 import com.hookheart.bookbook.camera.CameraManager;
 import com.hookheart.bookbook.camera.PlanarYUVLuminanceSource;
 import com.hookheart.bookbook.ui.CaptureActivity;
 
-import book.hookheart.com.com.R;
 
 
 /**

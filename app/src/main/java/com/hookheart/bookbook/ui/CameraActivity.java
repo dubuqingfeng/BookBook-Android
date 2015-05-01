@@ -16,10 +16,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hookheart.bookbook.R;
 import com.hookheart.bookbook.bean.Book;
 import com.hookheart.bookbook.utils.IsbnXmlSax;
 
-import book.hookheart.com.com.R;
 
 public class CameraActivity extends Activity {
 	private Button mCaptureButton, mExzitButton;

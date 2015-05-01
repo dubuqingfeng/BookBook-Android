@@ -1,19 +1,19 @@
-package book.hookheart.com.com;
+package com.hookheart.bookbook;
 
 import android.app.Activity;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.os.Bundle;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
 
 import com.hookheart.bookbook.fragment.MyBooksFragment;
 
@@ -58,7 +58,6 @@ public class MainTabActivity extends ActionBarActivity
             public void onPageSelected(int position) {
                 // when user do a swipe the selected tab change
                 tabHost.setSelectedNavigationItem(position);
-
             }
         });
 
@@ -202,7 +201,17 @@ public class MainTabActivity extends ActionBarActivity
         }
 
         public Fragment getItem(int num) {
-            return new MyBooksFragment();
+            switch (num){
+                case 0:
+                    return new MyBooksFragment();
+                case 1:
+                    return new MyBooksFragment();
+                case 2:
+                    return new MyBooksFragment();
+                default:
+                    break;
+            }
+            return null;
         }
 
         @Override

@@ -28,9 +28,8 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.google.zxing.ResultPoint;
+import com.hookheart.bookbook.R;
 import com.hookheart.bookbook.camera.CameraManager;
-
-import book.hookheart.com.com.R;
 
 
 /**

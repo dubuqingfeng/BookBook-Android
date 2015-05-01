@@ -11,4 +11,5 @@
     <color name="result_points">#c000ff00</color>
     <color name="result_text">#ffffffff</color>
     <color name="result_view">#b0000000</color>
+    <color name="holo_selector_pressed">#8033b5e5</color>
 </resources>

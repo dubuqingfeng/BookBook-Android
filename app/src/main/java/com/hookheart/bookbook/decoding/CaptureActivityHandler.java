@@ -26,12 +26,10 @@ import android.util.Log;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
+import com.hookheart.bookbook.R;
 import com.hookheart.bookbook.camera.CameraManager;
 import com.hookheart.bookbook.ui.CaptureActivity;
 import com.hookheart.bookbook.view.ViewfinderResultPointCallback;
-
-import book.hookheart.com.com.R;
-
 
 /**
  * This class handles all the messaging which comprises the state machine for
